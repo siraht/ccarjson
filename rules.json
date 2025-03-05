@@ -1,0 +1,206 @@
+[
+    {
+        "comment": "This file defines rules for setting 'None' or similar fields based on whether all fields in a category are '0'.",
+        "comment_structure": "Each rule has a 'target' field, a 'conditions_values' list with one condition checking if all specified fields are '0', and a 'default' value of '0'."
+    },
+    {
+        "comment": "Rule for 'Race - Declined' based on race fields",
+        "target": "Race - Declined",
+        "conditions_values": [
+            {
+                "comment": "If all race fields are '0', set 'Race - Declined' to '1'",
+                "conditions": {
+                    "American Indian/Alaskan Native": "0",
+                    "Asian": "0",
+                    "Black/African American": "0",
+                    "Native Hawaiian/Pacific Islander": "0",
+                    "White/Caucasian": "0"
+                },
+                "value": "1"
+            }
+        ],
+        "default": "0"
+    },
+    {
+        "comment": "Rule for 'Alone' based on living arrangement fields",
+        "target": "Alone",
+        "conditions_values": [
+            {
+                "comment": "If all living arrangement fields are '0', set 'Alone' to '1'",
+                "conditions": {
+                    "Mother": "0",
+                    "Father": "0",
+                    "Sibling(s)": "0",
+                    "Relative(s), kin": "0",
+                    "Foster Parent(s)": "0",
+                    "Guardian": "0",
+                    "Spouse": "0",
+                    "Partner/Significant Other": "0",
+                    "Child(ren)": "0",
+                    "Unrelated Person": "0"
+                },
+                "value": "1"
+            }
+        ],
+        "default": "0"
+    },
+    {
+        "comment": "Rule for 'None (Disabilities)' based on disability fields",
+        "target": "None (Disabilities)",
+        "conditions_values": [
+            {
+                "comment": "If all disability fields are '0', set 'None (Disabilities)' to '1'",
+                "conditions": {
+                    "Developmental Disability": "0",
+                    "Deaf/Hearing Loss": "0",
+                    "Blind/Vision Loss": "0",
+                    "Learning Disability": "0",
+                    "Traumatic Brain Injury (TBI)": "0"
+                },
+                "value": "1"
+            }
+        ],
+        "default": "0"
+    },
+    {
+        "comment": "Rule for 'None (Considerations for Providers)' based on provider consideration fields",
+        "target": "None (Considerations for Providers)",
+        "conditions_values": [
+            {
+                "comment": "If all provider consideration fields are '0', set 'None (Considerations for Providers)' to '1'",
+                "conditions": {
+                    "Self-care Problems": "0",
+                    "Food Attainment": "0",
+                    "Housing Access": "0",
+                    "Cultural": "0",
+                    "Language": "0"
+                },
+                "value": "1"
+            }
+        ],
+        "default": "0"
+    },
+    {
+        "comment": "Rule for 'None – History of Issues' based on history of issues fields",
+        "target": "None – History of Issues",
+        "conditions_values": [
+            {
+                "comment": "If all history of issues fields are '0', set 'None – History of Issues' to '1'",
+                "conditions": {
+                    "Suicide Attempt": "0",
+                    "Trauma": "0",
+                    "Legal/Incarcerations": "0",
+                    "Sexual Misconduct": "0",
+                    "Destroyed Property": "0",
+                    "Set Fires": "0",
+                    "Legal/Convictions": "0",
+                    "Animal Cruelty": "0",
+                    "Prenatal/Perinatal Drug/Alcohol Exposure": "0",
+                    "Danger to Self": "0",
+                    "Family Mental Illness": "0",
+                    "Family Substance Abuse": "0",
+                    "Violent Environment": "0"
+                },
+                "value": "1"
+            }
+        ],
+        "default": "0"
+    },
+    {
+        "comment": "Rule for 'None (Current Issues)' based on current issues fields",
+        "target": "None (Current Issues)",
+        "conditions_values": [
+            {
+                "comment": "If all current issues fields are '0', set 'None (Current Issues)' to '1'",
+                "conditions": {
+                    "Sexual Misconduct": "0",
+                    "Danger to Self": "0",
+                    "Injures Others": "0",
+                    "Injury by Abuse/Assault": "0",
+                    "Reckless Self-Endangerment": "0",
+                    "Suicide Ideation": "0",
+                    "Suicide Plan": "0",
+                    "Suicide Attempt": "0"
+                },
+                "value": "1"
+            }
+        ],
+        "default": "0"
+    },
+    {
+        "comment": "Rule for 'None-Victimization' based on victimization fields",
+        "target": "None-Victimization",
+        "conditions_values": [
+            {
+                "comment": "If all victimization fields are '0', set 'None-Victimization' to '1'",
+                "conditions": {
+                    "Sexual Abuse": "0",
+                    "Neglect": "0",
+                    "Physical Abuse": "0",
+                    "Verbal Abuse": "0"
+                },
+                "value": "1"
+            }
+        ],
+        "default": "0"
+    },
+    {
+        "comment": "Rule for 'None (History of Mental Health Services)' based on mental health service fields",
+        "target": "None (History of Mental Health Services)",
+        "conditions_values": [
+            {
+                "comment": "If all mental health service fields are '0', set 'None (History of Mental Health Services)' to '1'",
+                "conditions": {
+                    "Inpatient": "0",
+                    "Other 24-hour": "0",
+                    "Partial care": "0",
+                    "Outpatient": "0"
+                },
+                "value": "1"
+            }
+        ],
+        "default": "0"
+    },
+    {
+        "comment": "Rule for 'None (Previous/Concurrent Services)' based on previous/concurrent service fields",
+        "target": "None (Previous/Concurrent Services)",
+        "conditions_values": [
+            {
+                "comment": "If all previous/concurrent service fields are '0', set 'None (Previous/Concurrent Services)' to '1'",
+                "conditions": {
+                    "Juvenile Justice": "0",
+                    "Special Education": "0",
+                    "Child Welfare": "0",
+                    "Adult Corrections": "0",
+                    "Substance Abuse": "0",
+                    "Developmental Disabilities": "0"
+                },
+                "value": "1"
+            }
+        ],
+        "default": "0"
+    },
+    {
+        "comment": "Rule for 'None (Non-prescription Substance Use)' based on substance use fields",
+        "target": "None (Non-prescription Substance Use)",
+        "conditions_values": [
+            {
+                "comment": "If all substance use fields are '0', set 'None (Non-prescription Substance Use)' to '1'",
+                "conditions": {
+                    "Tobacco": "0",
+                    "Alcohol": "0",
+                    "Marijuana": "0",
+                    "Cocaine/Crack": "0",
+                    "Heroin": "0",
+                    "Other Opiates/Narcotics": "0",
+                    "Barbiturates/Sedatives/Tranquilizers": "0",
+                    "Amphetamines/Stimulants": "0",
+                    "Hallucinogens": "0",
+                    "Inhalants": "0"
+                },
+                "value": "1"
+            }
+        ],
+        "default": "0"
+    }
+]
