@@ -1,9 +1,5 @@
 [
     {
-        "comment": "This file defines rules for setting 'None' or similar fields based on whether all fields in a category are '0'.",
-        "comment_structure": "Each rule has a 'target' field, a 'conditions_values' list with one condition checking if all specified fields are '0', and a 'default' value of '0'."
-    },
-    {
         "comment": "Rule for 'Race - Declined' based on race fields",
         "target": "Race - Declined",
         "conditions_values": [
@@ -81,11 +77,11 @@
         "default": "0"
     },
     {
-        "comment": "Rule for 'None – History of Issues' based on history of issues fields",
-        "target": "None – History of Issues",
+        "comment": "Rule for 'None - History of Issues' based on history of issues fields",
+        "target": "None - History of Issues",
         "conditions_values": [
             {
-                "comment": "If all history of issues fields are '0', set 'None – History of Issues' to '1'",
+                "comment": "If all history of issues fields are '0', set 'None - History of Issues' to '1'",
                 "conditions": {
                     "Suicide Attempt": "0",
                     "Trauma": "0",

@@ -16,6 +16,8 @@ def apply_rules(fields, rules):
         dict: Updated fields dictionary after applying all rules.
     """
     for rule in rules:
+        if 'target' not in rule:
+            continue  # Skip any object without a 'target' key
         target = rule['target']
         conditions_values = rule.get('conditions_values', [])
         default = rule.get('default', None)
@@ -63,7 +65,7 @@ This app processes client data from JSON input into a fixed-length text file bas
 
 - **Step 1**: Ensure `config.csv` and `rules.json` are in the same directory as this app.
 - **Step 2**: Paste JSON data for a client and click "Process Client Data" to add it to the text file.
-- **Step 3**: Preview the text file, download it as `clients_data.txt`, or clear its contents.
+- **Step 3**: Preview the text file, verify the data, and download it as `clients_data.txt` or clear its contents.
 
 **Note**: Rules in `rules.json` must be ordered correctly to handle dependencies between fields.
 """)
@@ -114,6 +116,32 @@ if st.session_state['lines']:
     st.code(preview_text, language='text')
 else:
     st.info("No data in text file yet")
+
+# Verify Client Data
+st.header("Verify Client Data")
+st.markdown("Expand each client to verify the individual field values based on the fixed-length format.")
+if st.session_state['lines']:
+    for index, line in enumerate(st.session_state['lines']):
+        client_data = {}
+        start = 0
+        for _, row in st.session_state['config_df'].sort_values('order').iterrows():
+            field_name = row['name']
+            length = int(row['length'])
+            # Extract the exact value including spaces
+            value = line[start:start + length]
+            client_data[field_name] = value
+            start += length
+        # Get first and last name for label, stripping spaces for display
+        first_name = client_data.get("First Name", "").strip()
+        last_name = client_data.get("Last Name", "").strip()
+        # Construct label using First Name and Last Name; if missing, use placeholders
+        label = f"{first_name} {last_name}".strip() or f"Unnamed Client {index + 1}"
+        with st.expander(label):
+            # Create DataFrame with exact values including spaces
+            df = pd.DataFrame(list(client_data.items()), columns=["Field", "Value"])
+            st.dataframe(df)
+else:
+    st.info("No client data to verify")
 
 # Manage Text File
 st.header("Manage Text File")
