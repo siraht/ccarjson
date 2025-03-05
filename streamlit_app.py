@@ -117,8 +117,8 @@ if st.session_state['lines']:
 else:
     st.info("No data in text file yet")
 
-# Verify Client Data
-st.header("Verify Client Data")
+# Verify Client Data (Expanders)
+st.header("Verify Client Data (Expanders)")
 st.markdown("Expand each client to verify the individual field values based on the fixed-length format.")
 if st.session_state['lines']:
     for index, line in enumerate(st.session_state['lines']):
@@ -140,6 +140,32 @@ if st.session_state['lines']:
             # Create DataFrame with exact values including spaces
             df = pd.DataFrame(list(client_data.items()), columns=["Field", "Value"])
             st.dataframe(df)
+else:
+    st.info("No client data to verify")
+
+# Verify Client Data (Table View)
+st.header("Verify Client Data (Table View)")
+st.markdown("This table shows each client's data with fields split into columns as defined in config.csv. Headers include the order number, field names, and required lengths.")
+if st.session_state['lines']:
+    # Prepare headers with order number, field names, and lengths
+    headers = [f"{row['order']}: {row['name']} (Length: {row['length']})" 
+               for _, row in st.session_state['config_df'].sort_values('order').iterrows()]
+    # Prepare data for the table
+    table_data = []
+    for line in st.session_state['lines']:
+        start = 0
+        row_data = []
+        for _, row in st.session_state['config_df'].sort_values('order').iterrows():
+            length = int(row['length'])
+            # Extract the exact value including spaces
+            value = line[start:start + length]
+            row_data.append(value)
+            start += length
+        table_data.append(row_data)
+    # Create DataFrame
+    df_table = pd.DataFrame(table_data, columns=headers)
+    # Display the DataFrame
+    st.dataframe(df_table)
 else:
     st.info("No client data to verify")
 
