@@ -70,6 +70,69 @@ This app processes client data from JSON input into a fixed-length text file bas
 **Note**: Rules in `rules.json` must be ordered correctly to handle dependencies between fields.
 """)
 
+# New section for inputting text and selecting options
+st.header("Input Client Data Fields")
+with st.form(key='client_data_form'):
+    first_contact_date = st.text_input("First contact date")
+    date_of_admission = st.text_input("Date of admission")
+    type_of_insurance = st.selectbox("Type of insurance", ["Medicaid", "CHP+", "Commercial", "Self-pay"])
+    medicaid_rae = st.text_input("Medicaid RAE") if type_of_insurance in ["Medicaid", "CHP+"] else ""
+    medicaid_id = st.text_input("Medicaid ID") if type_of_insurance in ["Medicaid", "CHP+"] else ""
+    healthie_id = st.text_input("Healthie ID")
+    date_of_birth = st.text_input("Date of birth")
+    first_name = st.text_input("First Name")
+    last_name = st.text_input("Last Name")
+    gender = st.text_input("Gender")
+    county_of_residence = st.text_input("County of residence")
+    zip_code = st.text_input("Zip code")
+    staff_id = st.text_input("Staff ID", value="EA")
+    primary_diagnosis_icd10 = st.text_input("Primary Diagnosis ICD10 code")
+    action_type = st.selectbox("Action type", ["Admission", "Update", "Discharge", "Evaluation Only"])
+    update_type = st.selectbox("Update type", ["", "Annual", "Interim/reassessment", "Psychiatric Hospital Admission", "Psychiatric Hospital Discharge"])
+    discharge_date = st.text_input("Discharge Date") if action_type in ["Discharge", "Evaluation Only"] else ""
+    date_of_last_contact = st.text_input("Date of Last Contact") if action_type in ["Discharge", "Evaluation Only"] else ""
+    type_of_discharge = st.selectbox("Type of Discharge", ["1– Treatment completed", "2– Transferred/Referred", "3– Treatment not completed"]) if action_type in ["Discharge", "Evaluation Only"] else ""
+    discharge_termination_referral = st.text_input("Discharge/Termination Referral") if action_type in ["Discharge", "Evaluation Only"] else ""
+    reason_for_discharge = st.selectbox("Reason for Discharge", ["01=Attendance", "02=Client Decision", "03=Client stopped coming and contact efforts failed", "04=Financial/Payments", "05=Lack of Progress", "06=Medical Reasons", "07=Military Deployment", "08=Moved", "09=Incarcerated", "10=Died", "11=Agency closed/No longer in business"]) if action_type in ["Discharge", "Evaluation Only"] else ""
+    
+    submit_button = st.form_submit_button(label='Copy to Clipboard')
+    
+    if submit_button:
+        client_data = {
+            "First contact date": first_contact_date,
+            "Date of admission": date_of_admission,
+            "Medicaid RAE": medicaid_rae,
+            "Medicaid ID": medicaid_id,
+            "Healthie ID": healthie_id,
+            "Date of birth": date_of_birth,
+            "First Name": first_name,
+            "Last Name": last_name,
+            "Gender": gender,
+            "County of residence": county_of_residence,
+            "Zip code": zip_code,
+            "Staff ID": staff_id,
+            "Primary Diagnosis ICD10 code": primary_diagnosis_icd10,
+            "Type of insurance": type_of_insurance,
+            "Action type": action_type,
+            "Update type": update_type,
+            "Discharge Date": discharge_date,
+            "Date of Last Contact": date_of_last_contact,
+            "Type of Discharge": type_of_discharge,
+            "Discharge/Termination Referral": discharge_termination_referral,
+            "Reason for Discharge": reason_for_discharge
+        }
+        
+        # Check that all required fields have values
+        required_fields = ["First contact date", "Date of admission", "Healthie ID", "Date of birth", "First Name", "Last Name", "Gender", "County of residence", "Zip code", "Staff ID", "Primary Diagnosis ICD10 code", "Type of insurance", "Action type"]
+        missing_fields = [field for field in required_fields if not client_data[field]]
+        
+        if missing_fields:
+            st.error(f"Missing required fields: {', '.join(missing_fields)}")
+        else:
+            # Display the JSON data in a text area for manual copying
+            st.text_area("Client Data JSON", json.dumps(client_data), height=200)
+            st.success("Client data ready to be copied")
+
 # Input Client JSON Data
 st.header("Input Client JSON Data")
 json_input = st.text_area("Paste JSON here (e.g., {'field_A': 'X'})")
@@ -116,6 +179,18 @@ if st.session_state['lines']:
     st.code(preview_text, language='text')
 else:
     st.info("No data in text file yet")
+
+# Add a text area for pasting fixed-length text
+st.header("Paste Fixed-Length Text")
+fixed_length_text = st.text_area("Paste fixed-length text here")
+
+# Button to process the pasted fixed-length text
+if st.button("Process Pasted Text"):
+    if fixed_length_text:
+        st.session_state['lines'] = fixed_length_text.split('\n')
+        st.success("Pasted text processed and added to text file")
+    else:
+        st.error("No text to process")
 
 # Verify Client Data (Expanders)
 st.header("Verify Client Data (Expanders)")
@@ -169,16 +244,46 @@ if st.session_state['lines']:
 else:
     st.info("No client data to verify")
 
+# Function to extract the latest Effective Date
+def get_latest_effective_date(lines, config_df):
+    latest_date = None
+    for line in lines:
+        start = 0
+        for _, row in config_df.sort_values('order').iterrows():
+            field_name = row['name']
+            length = int(row['length'])
+            value = line[start:start + length].strip()
+            start += length
+            if field_name.lower() == 'effective date':
+                try:
+                    # Parse the date in MMDDYYYY format
+                    date_value = pd.to_datetime(value, format='%m%d%Y')
+                    if latest_date is None or date_value > latest_date:
+                        latest_date = date_value
+                except ValueError:
+                    continue
+    return latest_date
+
 # Manage Text File
 st.header("Manage Text File")
 col1, col2 = st.columns(2)
 with col1:
     if st.session_state['lines']:
-        file_content = '\n'.join(st.session_state['lines']).encode('utf-8')
+        # Convert lines to CRLF line terminators
+        file_content = '\r\n'.join(st.session_state['lines']) + '\r\n'
+        file_content = file_content.encode('utf-8')
+        
+        # Get the latest Effective Date
+        latest_date = get_latest_effective_date(st.session_state['lines'], st.session_state['config_df'])
+        if latest_date:
+            file_name = f"194{latest_date.strftime('%m%y')}.car"
+        else:
+            file_name = "clients_data.car"
+        
         st.download_button(
             label="Download Text File",
             data=file_content,
-            file_name="clients_data.txt",
+            file_name=file_name,
             mime="text/plain"
         )
     else:
