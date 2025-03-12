@@ -71,67 +71,68 @@ This app processes client data from JSON input into a fixed-length text file bas
 """)
 
 # New section for inputting text and selecting options
-st.header("Input Client Data Fields")
-with st.form(key='client_data_form'):
-    first_contact_date = st.text_input("First contact date")
-    date_of_admission = st.text_input("Date of admission")
-    type_of_insurance = st.selectbox("Type of insurance", ["Medicaid", "CHP+", "Commercial", "Self-pay"])
-    medicaid_rae = st.text_input("Medicaid RAE") if type_of_insurance in ["Medicaid", "CHP+"] else ""
-    medicaid_id = st.text_input("Medicaid ID") if type_of_insurance in ["Medicaid", "CHP+"] else ""
-    healthie_id = st.text_input("Healthie ID")
-    date_of_birth = st.text_input("Date of birth")
-    first_name = st.text_input("First Name")
-    last_name = st.text_input("Last Name")
-    gender = st.text_input("Gender")
-    county_of_residence = st.text_input("County of residence")
-    zip_code = st.text_input("Zip code")
-    staff_id = st.text_input("Staff ID", value="EA")
-    primary_diagnosis_icd10 = st.text_input("Primary Diagnosis ICD10 code")
-    action_type = st.selectbox("Action type", ["Admission", "Update", "Discharge", "Evaluation Only"])
-    update_type = st.selectbox("Update type", ["", "Annual", "Interim/reassessment", "Psychiatric Hospital Admission", "Psychiatric Hospital Discharge"])
-    discharge_date = st.text_input("Discharge Date") if action_type in ["Discharge", "Evaluation Only"] else ""
-    date_of_last_contact = st.text_input("Date of Last Contact") if action_type in ["Discharge", "Evaluation Only"] else ""
-    type_of_discharge = st.selectbox("Type of Discharge", ["1– Treatment completed", "2– Transferred/Referred", "3– Treatment not completed"]) if action_type in ["Discharge", "Evaluation Only"] else ""
-    discharge_termination_referral = st.text_input("Discharge/Termination Referral") if action_type in ["Discharge", "Evaluation Only"] else ""
-    reason_for_discharge = st.selectbox("Reason for Discharge", ["01=Attendance", "02=Client Decision", "03=Client stopped coming and contact efforts failed", "04=Financial/Payments", "05=Lack of Progress", "06=Medical Reasons", "07=Military Deployment", "08=Moved", "09=Incarcerated", "10=Died", "11=Agency closed/No longer in business"]) if action_type in ["Discharge", "Evaluation Only"] else ""
-    
-    submit_button = st.form_submit_button(label='Copy to Clipboard')
-    
-    if submit_button:
-        client_data = {
-            "First contact date": first_contact_date,
-            "Date of admission": date_of_admission,
-            "Medicaid RAE": medicaid_rae,
-            "Medicaid ID": medicaid_id,
-            "Healthie ID": healthie_id,
-            "Date of birth": date_of_birth,
-            "First Name": first_name,
-            "Last Name": last_name,
-            "Gender": gender,
-            "County of residence": county_of_residence,
-            "Zip code": zip_code,
-            "Staff ID": staff_id,
-            "Primary Diagnosis ICD10 code": primary_diagnosis_icd10,
-            "Type of insurance": type_of_insurance,
-            "Action type": action_type,
-            "Update type": update_type,
-            "Discharge Date": discharge_date,
-            "Date of Last Contact": date_of_last_contact,
-            "Type of Discharge": type_of_discharge,
-            "Discharge/Termination Referral": discharge_termination_referral,
-            "Reason for Discharge": reason_for_discharge
-        }
+with st.expander("Additional information needed for CNAI"):
+    st.header("Input Client Data Fields")
+    with st.form(key='client_data_form'):
+        first_contact_date = st.text_input("First contact date")
+        date_of_admission = st.text_input("Date of admission")
+        type_of_insurance = st.selectbox("Type of insurance", ["Medicaid", "CHP+", "Commercial", "Self-pay"])
+        medicaid_rae = st.text_input("Medicaid RAE") if type_of_insurance in ["Medicaid", "CHP+"] else ""
+        medicaid_id = st.text_input("Medicaid ID") if type_of_insurance in ["Medicaid", "CHP+"] else ""
+        healthie_id = st.text_input("Healthie ID")
+        date_of_birth = st.text_input("Date of birth")
+        first_name = st.text_input("First Name")
+        last_name = st.text_input("Last Name")
+        gender = st.text_input("Gender")
+        county_of_residence = st.text_input("County of residence")
+        zip_code = st.text_input("Zip code")
+        staff_id = st.text_input("Staff ID", value="EA")
+        primary_diagnosis_icd10 = st.text_input("Primary Diagnosis ICD10 code")
+        action_type = st.selectbox("Action type", ["Admission", "Update", "Discharge", "Evaluation Only"])
+        update_type = st.selectbox("Update type", ["", "Annual", "Interim/reassessment", "Psychiatric Hospital Admission", "Psychiatric Hospital Discharge"])
+        discharge_date = st.text_input("Discharge Date") if action_type in ["Discharge", "Evaluation Only"] else ""
+        date_of_last_contact = st.text_input("Date of Last Contact") if action_type in ["Discharge", "Evaluation Only"] else ""
+        type_of_discharge = st.selectbox("Type of Discharge", ["1– Treatment completed", "2– Transferred/Referred", "3– Treatment not completed"]) if action_type in ["Discharge", "Evaluation Only"] else ""
+        discharge_termination_referral = st.text_input("Discharge/Termination Referral") if action_type in ["Discharge", "Evaluation Only"] else ""
+        reason_for_discharge = st.selectbox("Reason for Discharge", ["01=Attendance", "02=Client Decision", "03=Client stopped coming and contact efforts failed", "04=Financial/Payments", "05=Lack of Progress", "06=Medical Reasons", "07=Military Deployment", "08=Moved", "09=Incarcerated", "10=Died", "11=Agency closed/No longer in business"]) if action_type in ["Discharge", "Evaluation Only"] else ""
         
-        # Check that all required fields have values
-        required_fields = ["First contact date", "Date of admission", "Healthie ID", "Date of birth", "First Name", "Last Name", "Gender", "County of residence", "Zip code", "Staff ID", "Primary Diagnosis ICD10 code", "Type of insurance", "Action type"]
-        missing_fields = [field for field in required_fields if not client_data[field]]
+        submit_button = st.form_submit_button(label='Copy to Clipboard')
         
-        if missing_fields:
-            st.error(f"Missing required fields: {', '.join(missing_fields)}")
-        else:
-            # Display the JSON data in a text area for manual copying
-            st.text_area("Client Data JSON", json.dumps(client_data), height=200)
-            st.success("Client data ready to be copied")
+        if submit_button:
+            client_data = {
+                "First contact date": first_contact_date,
+                "Date of admission": date_of_admission,
+                "Medicaid RAE": medicaid_rae,
+                "Medicaid ID": medicaid_id,
+                "Healthie ID": healthie_id,
+                "Date of birth": date_of_birth,
+                "First Name": first_name,
+                "Last Name": last_name,
+                "Gender": gender,
+                "County of residence": county_of_residence,
+                "Zip code": zip_code,
+                "Staff ID": staff_id,
+                "Primary Diagnosis ICD10 code": primary_diagnosis_icd10,
+                "Type of insurance": type_of_insurance,
+                "Action type": action_type,
+                "Update type": update_type,
+                "Discharge Date": discharge_date,
+                "Date of Last Contact": date_of_last_contact,
+                "Type of Discharge": type_of_discharge,
+                "Discharge/Termination Referral": discharge_termination_referral,
+                "Reason for Discharge": reason_for_discharge
+            }
+            
+            # Check that all required fields have values
+            required_fields = ["First contact date", "Date of admission", "Healthie ID", "Date of birth", "First Name", "Last Name", "Gender", "County of residence", "Zip code", "Staff ID", "Primary Diagnosis ICD10 code", "Type of insurance", "Action type"]
+            missing_fields = [field for field in required_fields if not client_data[field]]
+            
+            if missing_fields:
+                st.error(f"Missing required fields: {', '.join(missing_fields)}")
+            else:
+                # Display the JSON data in a text area for manual copying
+                st.text_area("Client Data JSON", json.dumps(client_data), height=200)
+                st.success("Client data ready to be copied")
 
 # Input Client JSON Data
 st.header("Input Client JSON Data")
