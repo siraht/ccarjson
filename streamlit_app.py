@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import json
 import os
+from csv_processor import process_csv_to_fixed_length, validate_csv_input
 
 # Function to apply rules to fields
 def apply_rules(fields, rules):
@@ -44,6 +45,18 @@ if 'config_df' not in st.session_state:
             st.stop()
     except Exception as e:
         st.error(f"Error loading config.csv: {e}")
+        st.stop()
+
+# Load CSV to fixed-length configuration
+if 'csv_to_fl_config' not in st.session_state:
+    try:
+        st.session_state['csv_to_fl_config'] = pd.read_csv('csvToFL.csv')
+        required_columns = ['order', 'name', 'output_length', 'alignment']
+        if not all(col in st.session_state['csv_to_fl_config'].columns for col in required_columns):
+            st.error("csvToFL.csv must contain columns: order, name, output_length, alignment")
+            st.stop()
+    except Exception as e:
+        st.error(f"Error loading csvToFL.csv: {e}")
         st.stop()
 
 if 'rules' not in st.session_state:
@@ -467,9 +480,17 @@ def merge_json_by_priority(json1, json2, config_df):
 # Input Client JSON Data
 st.header("Paste Clinical Notes AI output here")
 
+# Input format selector
+input_format = st.radio(
+    "Select input format", 
+    ["Auto-detect", "JSON", "Fixed-width", "CSV"],
+    horizontal=True,
+    help="Select the format of the input data. Auto-detect will try to determine if it's JSON or fixed-width.")
+
 # Primary input
-json_input_primary = st.text_area("Paste evaluation note-generated JSON or fixed-width text here.",
-                              help="The system will automatically detect if this is JSON or fixed-width format")
+json_input_primary = st.text_area(
+    "Paste evaluation note-generated data here.",
+    help="The system will process the data according to the selected format above")
 
 # Option to enable merging
 enable_merge = st.checkbox("Need to create a discharge CCAR?", 
@@ -490,15 +511,42 @@ process_button = st.button("Process Client Data")
 # Process input data
 if process_button:
     try:
-        # Detect if the primary input is JSON or fixed-width text
+        # Process primary input based on selected format
         fields = {}
         primary_parse_success = False
         
-        # First try to parse as JSON
-        if '{' in json_input_primary:
+        # Parse based on the selected format
+        if input_format == "CSV":
+            # Process CSV data using the csv_processor module
+            try:
+                # Validate CSV input
+                is_valid, error_message = validate_csv_input(json_input_primary, st.session_state['csv_to_fl_config'])
+                
+                if is_valid:
+                    # Convert CSV to fixed-length text
+                    fixed_length_text = process_csv_to_fixed_length(json_input_primary, st.session_state['csv_to_fl_config'])
+                    
+                    # Parse the fixed-length text using the existing logic
+                    fields = parse_fixed_width_text(fixed_length_text, st.session_state['config_df'])
+                    
+                    if fields:
+                        primary_parse_success = True
+                        st.success("Successfully processed CSV input to fixed-length format")
+                    else:
+                        st.error("Failed to parse the generated fixed-length text")
+                else:
+                    st.error(f"CSV validation error: {error_message}")
+            except Exception as e:
+                st.error(f"Error processing CSV input: {e}")
+                
+        elif input_format == "JSON" or (input_format == "Auto-detect" and '{' in json_input_primary):
+            # Process JSON directly
             try:
                 # Clean the input by removing everything before the opening curly brace
-                cleaned_input_primary = json_input_primary[json_input_primary.find('{'):]
+                if '{' in json_input_primary:
+                    cleaned_input_primary = json_input_primary[json_input_primary.find('{'):]
+                else:
+                    cleaned_input_primary = json_input_primary
                 
                 # Parse primary JSON
                 fields = json.loads(cleaned_input_primary)
@@ -508,10 +556,13 @@ if process_button:
                 else:
                     st.error("Primary input JSON must be a dictionary")
             except json.JSONDecodeError:
-                st.warning("Could not parse primary input as JSON, trying fixed-width format...")
+                if input_format == "JSON":
+                    st.error("Invalid JSON format in primary input")
+                else:
+                    st.warning("Could not parse primary input as JSON, trying fixed-width format...")
         
-        # If JSON parsing failed or no curly braces, try to parse as fixed-width text
-        if not primary_parse_success:
+        # For fixed-width or if auto-detect JSON failed
+        if not primary_parse_success and (input_format == "Fixed-width" or input_format == "Auto-detect"):
             try:
                 # Parse the fixed-width text
                 fields = parse_fixed_width_text(json_input_primary, st.session_state['config_df'])
@@ -519,8 +570,8 @@ if process_button:
                 if fields:
                     primary_parse_success = True
                     st.success("Successfully parsed primary input as fixed-width text")
-                else:
-                    # If no data was parsed, try JSON again without the curly brace check as a last resort
+                elif input_format == "Auto-detect":
+                    # If no data was parsed and we're auto-detecting, try JSON again without the curly brace check
                     try:
                         fields = json.loads(json_input_primary)
                         if isinstance(fields, dict):
@@ -530,6 +581,8 @@ if process_button:
                             st.error("Primary input could not be parsed as either JSON or fixed-width text")
                     except json.JSONDecodeError:
                         st.error("Could not parse primary input - it doesn't appear to be valid JSON or fixed-width text")
+                else:
+                    st.error("Could not parse as fixed-width text")
             except Exception as e:
                 st.error(f"Error parsing primary input: {e}")
         
@@ -540,7 +593,7 @@ if process_button:
                 secondary_data = {}
                 merge_occurred = False
                 
-                # Detect if the input is JSON or fixed-width text
+                # Auto-detect for secondary input (always auto-detect since we don't have a selector for it)
                 try:
                     # First try to parse as JSON
                     if '{' in secondary_input:
@@ -556,26 +609,51 @@ if process_button:
                             merge_occurred = True
                             st.success("Successfully parsed secondary input as JSON")
                     else:
-                        # Try to parse as fixed-width text
-                        fixed_width_data = parse_fixed_width_text(secondary_input, st.session_state['config_df'])
-                        
-                        if fixed_width_data:
-                            # Add to secondary data
-                            secondary_data.update(fixed_width_data)
-                            merge_occurred = True
-                            st.success("Successfully parsed secondary input as fixed-width text")
-                        else:
-                            # If no data was parsed, try JSON again without the curly brace check
+                        # Check if it looks like CSV (contains commas and newlines)
+                        if ',' in secondary_input and '\n' in secondary_input:
                             try:
-                                secondary_data_json = json.loads(secondary_input)
-                                if isinstance(secondary_data_json, dict):
-                                    secondary_data.update(secondary_data_json)
-                                    merge_occurred = True
-                                    st.success("Successfully parsed secondary input as JSON")
+                                # Validate and process as CSV
+                                is_valid, error_message = validate_csv_input(secondary_input, st.session_state['csv_to_fl_config'])
+                                
+                                if is_valid:
+                                    # Convert to fixed-length
+                                    fixed_length_text = process_csv_to_fixed_length(secondary_input, st.session_state['csv_to_fl_config'])
+                                    
+                                    # Parse the fixed-length text
+                                    csv_data = parse_fixed_width_text(fixed_length_text, st.session_state['config_df'])
+                                    
+                                    if csv_data:
+                                        secondary_data.update(csv_data)
+                                        merge_occurred = True
+                                        st.success("Successfully parsed secondary input as CSV")
+                                    else:
+                                        st.warning("Could not parse secondary CSV input, trying as fixed-width...")
                                 else:
-                                    st.error("Secondary input could not be parsed as either JSON or fixed-width text")
-                            except json.JSONDecodeError:
-                                st.error("Could not parse secondary input - it doesn't appear to be valid JSON or fixed-width text")
+                                    st.warning(f"CSV validation error for secondary input: {error_message}, trying as fixed-width...")
+                            except Exception as e:
+                                st.warning(f"Error processing secondary CSV input: {e}, trying as fixed-width...")
+                                
+                        # Try to parse as fixed-width text
+                        if not merge_occurred:
+                            fixed_width_data = parse_fixed_width_text(secondary_input, st.session_state['config_df'])
+                            
+                            if fixed_width_data:
+                                # Add to secondary data
+                                secondary_data.update(fixed_width_data)
+                                merge_occurred = True
+                                st.success("Successfully parsed secondary input as fixed-width text")
+                            else:
+                                # If no data was parsed, try JSON again without the curly brace check
+                                try:
+                                    secondary_data_json = json.loads(secondary_input)
+                                    if isinstance(secondary_data_json, dict):
+                                        secondary_data.update(secondary_data_json)
+                                        merge_occurred = True
+                                        st.success("Successfully parsed secondary input as JSON")
+                                    else:
+                                        st.error("Secondary input could not be parsed as either JSON, CSV, or fixed-width text")
+                                except json.JSONDecodeError:
+                                    st.error("Could not parse secondary input - it doesn't appear to be valid JSON, CSV, or fixed-width text")
                     
                     # Merge the data if we have secondary data
                     if secondary_data and merge_occurred:
