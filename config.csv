@@ -1,202 +1,202 @@
-order,name,length,alignment,action_type
-1,"Agency",3,right,all
-2,"BHO/RAE",2,right,all
-3,"Program",5,right,all
-4,"Medicaid/State Identifier",7,right,all
-5,"Client ID/Trails ID",10,right,all
-6,"SSN",9,right,all
-7,"Date of Birth",8,right,all
-8,"Last Name",20,right,all
-9,"First Name",20,right,all
-10,"Middle Name",15,right,all
-11,"Title",4,right,all
-12,"Medicaid Fee For Service",1,right,all
-13,"Medicaid - Capitated",1,right,all
-14,"Medicare",1,right,all
-15,"Self-Pay",1,right,all
-16,"Insurance & Third Party",1,right,all
-17,"State/Other Federal",1,right,all
-18,"Local",1,right,all
-19,"CHP+",1,right,all
-20,"Referral Source",3,right,all
-21,"Effective Date",8,right,03
-22,"Action Type",2,right,all
-23,"Type of Update",2,right,03
-24,"CDPHE ID",6,right,all
-25,"Housing Only",1,right,all
-26,"Meds Only",1,right,all
-27,"Admission Date",8,right,all
-28,"Placement End Date",8,right,all
-29,"Special Studies Code 1",10,right,all
-30,"Special Studies Code 2",10,right,all
-31,"For Agency Use Only",10,right,all
-32,"Residential Treatment Level of Care Identified",1,right,all
-33,"Residential Treatment Level of Care Authorized",1,right,all
-34,"Residential Treatment Provider",7,right,all
-35,"Gender",1,right,all
-36,"Hispanic Ethnicity",1,right,all
-37,"American Indian/Alaskan Native",1,right,all
-38,"Asian",1,right,all
-39,"Black/African American",1,right,all
-40,"Native Hawaiian/Pacific Islander",1,right,all
-41,"White/Caucasian",1,right,all
-42,"Race - Declined",1,right,all
-43,"Discharge Date",8,right,0506
-44,"Date of Last Contact",8,right,0506
-45,"Type of Discharge",1,right,0506
-46,"Discharge/Termination Referral",3,right,0506
-47,"AXIS I Primary Psychiatric Diagnosis",5,right,all
-48,"AXIS I Secondary Psychiatric Diagnosis",5,right,all
-49,"AXIS II Psychiatric Diagnosis",5,right,all
-50,"Substance Abuse Diagnosis",5,right,all
-51,"GAF Score",3,right,all
-52,"DC03 AXIS I Primary Diagnosis",3,right,all
-53,"DC03 AXIS I Secondary Diagnosis",3,right,all
-54,"DC03 AXIS II Relationship Disorder Class",4,right,all
-55,"DC03 PIR – GAS",3,right,all
-56,"Highest Education Level In Years",2,right,all
-57,"Marital Status",2,right,all
-58,"Number Children",2,right,all
-59,"Annual Income",6,right,all
-60,"SSI",1,right,all
-61,"SSDI",1,right,all
-62,"Number Of Persons Supported By Income",1,right,all
-63,"Current Primary Role/Employment/School Status",2,right,all
-64,"Place Of Residence",2,right,all
-65,"Alone",1,right,all
-66,"Mother",1,right,all
-67,"Father",1,right,all
-68,"Sibling(s)",1,right,all
-69,"Relative(s), kin",1,right,all
-70,"Foster Parent(s)",1,right,all
-71,"Guardian",1,right,all
-72,"Spouse",1,right,all
-73,"Partner/Significant Other",1,right,all
-74,"Child(ren)",1,right,all
-75,"Unrelated Person",1,right,all
-76,"Existence Presenting Problem",1,right,all
-77,"Number of Prior Psychiatric Hospitalizations",2,right,all
-78,"Developmental Disability",1,right,all
-79,"Deaf/Hearing Loss",1,right,all
-80,"Blind/Vision Loss",1,right,all
-81,"Learning Disability",1,right,all
-82,"Traumatic Brain Injury (TBI)",1,right,all
-83,"None (Disabilities)",1,right,all
-84,"Legal Status",2,right,all
-85,"Self-care Problems",1,right,all
-86,"Food Attainment",1,right,all
-87,"Housing Access",1,right,all
-88,"Cultural",1,right,all
-89,"Language",1,right,all
-90,"None (Considerations for Providers)",1,right,all
-91,"Suicide Attempt",1,right,all
-92,"Trauma",1,right,all
-93,"Legal/Incarcerations",1,right,all
-94,"Sexual Misconduct",1,right,all
-95,"Destroyed Property",1,right,all
-96,"Set Fires",1,right,all
-97,"Legal/Convictions",1,right,all
-98,"Animal Cruelty",1,right,all
-99,"Prenatal/Perinatal Drug/Alcohol Exposure",1,right,all
-100,"Danger to Self",1,right,all
-101,"Family Mental Illness",1,right,all
-102,"Family Substance Abuse",1,right,all
-103,"Violent Environment",1,right,all
-104,"None - History of Issues",1,right,all
-105,"Sexual Misconduct",1,right,all
-106,"Danger to Self",1,right,all
-107,"Injures Others",1,right,all
-108,"Injury by Abuse/Assault",1,right,all
-109,"Reckless Self-Endangerment",1,right,all
-110,"Suicide Ideation",1,right,all
-111,"Suicide Plan",1,right,all
-112,"Suicide Attempt",1,right,all
-113,"None (Current Issues)",1,right,all
-114,"Danger to Self",1,right,all
-115,"Danger to Others",1,right,all
-116,"Gravely Disabled",1,right,all
-117,"Does not apply (27-65 Criteria)",1,right,all
-118,"County Of Residence",3,right,all
-119,"Zip Code",5,right,all
-120,"Staff ID",7,right,all
-121,"School Age",1,right,all
-122,"Expelled from School",1,right,all
-123,"Suspended from School",1,right,all
-124,"Unexcused Absences from School",1,right,all
-125,"Currently Passing all Classes",1,right,all
-126,"Child less than 6 years old",1,right,all
-127,"Talking/Communication",1,right,all
-128,"Physical/Motor Movements",1,right,all
-129,"Hearing/Seeing",1,right,all
-130,"Learning/Cognition",1,right,all
-131,"Playing & Interacting",1,right,all
-132,"Self-Help Skills",1,right,all
-133,"Child readiness developmentally appropriate",1,right,all
-134,"Sexual Abuse",1,right,all
-135,"Neglect",1,right,all
-136,"Physical Abuse",1,right,all
-137,"Verbal Abuse",1,right,all
-138,"None-Victimization",1,right,all
-139,"Inpatient",1,right,all
-140,"Other 24-hour",1,right,all
-141,"Partial care",1,right,all
-142,"Outpatient",1,right,all
-143,"None (History of Mental Health Services)",1,right,all
-144,"Juvenile Justice",1,right,all
-145,"Special Education",1,right,all
-146,"Child Welfare",1,right,all
-147,"Adult Corrections",1,right,all
-148,"Substance Abuse",1,right,all
-149,"Developmental Disabilities",1,right,all
-150,"None (Previous/Concurrent Services)",1,right,all
-151,"Tobacco",1,right,all
-152,"Alcohol",1,right,all
-153,"Marijuana",1,right,all
-154,"Cocaine/Crack",1,right,all
-155,"Heroin",1,right,all
-156,"Other Opiates/Narcotics",1,right,all
-157,"Barbiturates/Sedatives/Tranquilizers",1,right,all
-158,"Amphetamines/Stimulants",1,right,all
-159,"Hallucinogens",1,right,all
-160,"Inhalants",1,right,all
-161,"None (Non-prescription Substance Use)",1,right,all
-162,"Physical Health",1,right,all
-163,"Self-Care / Basic Needs",1,right,all
-164,"Legal",1,right,all
-165,"Security / Supervision",1,right,all
-166,"Suicide / Danger to Self",1,right,all
-167,"Aggression / Danger to Others",1,right,all
-168,"Psychosis",1,right,all
-169,"Cognition",1,right,all
-170,"Attention",1,right,all
-171,"Manic Issues",1,right,all
-172,"Anxiety Issues",1,right,all
-173,"Depressive Issues",1,right,all
-174,"Alcohol Use",1,right,all
-175,"Drug Use",1,right,all
-176,"Family",1,right,all
-177,"Interpersonal",1,right,all
-178,"Socialization",1,right,all
-179,"Role Performance",1,right,all
-180,"Overall Symptom Severity",1,right,all
-181,"Social Support",1,right,all
-182,"Hope",1,right,all
-183,"Empowerment",1,right,all
-184,"Activity Involvement",1,right,all
-185,"Overall Recovery",1,right,all
-186,"Overall Level of Functioning",1,right,all
-187,"Record Code",1,right,all
-188,"First Contact Date",8,right,0106
-189,"Date of First Appointment Offered",8,right,0106
-190,"Pregnant",1,right,all
-191,"Sexual Orientation",1,right,all
-192,"Reason for Discharge",2,right,0506
-193,"Veteran/Active Military Status",1,right,all
-194,"Tobacco/Vaping Nicotine Status",1,right,all
-195,"Criminal Justice Involvement",2,right,all
-196,"School Attendance",1,right,all
-197,"Trauma History",1,right,all
-198,"Primary Diagnosis 1",7,right,all
-199,"Diagnosis 2",7,right,all
-200,"Diagnosis 3",7,right,all
-201,"Diagnosis 4",7,right,all
+order,name,length,alignment,action_type,not_in_eval
+1,"Agency",3,right,all,false
+2,"BHO/RAE",2,right,all,true
+3,"Program",5,right,all,false
+4,"Medicaid/State Identifier",7,right,all,true
+5,"Client ID/Trails ID",10,right,all,true
+6,"SSN",9,right,all,false
+7,"Date of Birth",8,right,all,true
+8,"Last Name",20,right,all,true
+9,"First Name",20,right,all,true
+10,"Middle Name",15,right,all,false
+11,"Title",4,right,all,false
+12,"Medicaid Fee For Service",1,right,all,true
+13,"Medicaid - Capitated",1,right,all,true
+14,"Medicare",1,right,all,true
+15,"Self-Pay",1,right,all,true
+16,"Insurance & Third Party",1,right,all,true
+17,"State/Other Federal",1,right,all,true
+18,"Local",1,right,all,true
+19,"CHP+",1,right,all,true
+20,"Referral Source",3,right,all,false
+21,"Effective Date",8,right,03,true
+22,"Action Type",2,right,all,true
+23,"Type of Update",2,right,03,true
+24,"CDPHE ID",6,right,all,false
+25,"Housing Only",1,right,all,false
+26,"Meds Only",1,right,all,false
+27,"Admission Date",8,right,0106,true
+28,"Placement End Date",8,right,all,false
+29,"Special Studies Code 1",10,right,all,false
+30,"Special Studies Code 2",10,right,all,false
+31,"For Agency Use Only",10,right,all,false
+32,"Residential Treatment Level of Care Identified",1,right,all,false
+33,"Residential Treatment Level of Care Authorized",1,right,all,false
+34,"Residential Treatment Provider",7,right,all,false
+35,"Gender",1,right,all,true
+36,"Hispanic Ethnicity",1,right,all,false
+37,"American Indian/Alaskan Native",1,right,all,false
+38,"Asian",1,right,all,false
+39,"Black/African American",1,right,all,false
+40,"Native Hawaiian/Pacific Islander",1,right,all,false
+41,"White/Caucasian",1,right,all,false
+42,"Race - Declined",1,right,all,false
+43,"Discharge Date",8,right,0506,true
+44,"Date of Last Contact",8,right,0506,true
+45,"Type of Discharge",1,right,0506,true
+46,"Discharge/Termination Referral",3,right,0506,true
+47,"AXIS I Primary Psychiatric Diagnosis",5,right,all,false
+48,"AXIS I Secondary Psychiatric Diagnosis",5,right,all,false
+49,"AXIS II Psychiatric Diagnosis",5,right,all,false
+50,"Substance Abuse Diagnosis",5,right,all,false
+51,"GAF Score",3,right,all,false
+52,"DC03 AXIS I Primary Diagnosis",3,right,all,false
+53,"DC03 AXIS I Secondary Diagnosis",3,right,all,false
+54,"DC03 AXIS II Relationship Disorder Class",4,right,all,false
+55,"DC03 PIR – GAS",3,right,all,false
+56,"Highest Education Level In Years",2,right,all,false
+57,"Marital Status",2,right,all,false
+58,"Number Children",2,right,all,false
+59,"Annual Income",6,right,all,false
+60,"SSI",1,right,all,false
+61,"SSDI",1,right,all,false
+62,"Number Of Persons Supported By Income",1,right,all,false
+63,"Current Primary Role/Employment/School Status",2,right,all,false
+64,"Place Of Residence",2,right,all,false
+65,"Alone",1,right,all,false
+66,"Mother",1,right,all,false
+67,"Father",1,right,all,false
+68,"Sibling(s)",1,right,all,false
+69,"Relative(s), kin",1,right,all,false
+70,"Foster Parent(s)",1,right,all,false
+71,"Guardian",1,right,all,false
+72,"Spouse",1,right,all,false
+73,"Partner/Significant Other",1,right,all,false
+74,"Child(ren)",1,right,all,false
+75,"Unrelated Person",1,right,all,false
+76,"Existence Presenting Problem",1,right,all,false
+77,"Number of Prior Psychiatric Hospitalizations",2,right,all,false
+78,"Developmental Disability",1,right,all,false
+79,"Deaf/Hearing Loss",1,right,all,false
+80,"Blind/Vision Loss",1,right,all,false
+81,"Learning Disability",1,right,all,false
+82,"Traumatic Brain Injury (TBI)",1,right,all,false
+83,"None (Disabilities)",1,right,all,false
+84,"Legal Status",2,right,all,false
+85,"Self-care Problems",1,right,all,false
+86,"Food Attainment",1,right,all,false
+87,"Housing Access",1,right,all,false
+88,"Cultural",1,right,all,false
+89,"Language",1,right,all,false
+90,"None (Considerations for Providers)",1,right,all,false
+91,"Suicide Attempt",1,right,all,false
+92,"Trauma",1,right,all,false
+93,"Legal/Incarcerations",1,right,all,false
+94,"Sexual Misconduct",1,right,all,false
+95,"Destroyed Property",1,right,all,false
+96,"Set Fires",1,right,all,false
+97,"Legal/Convictions",1,right,all,false
+98,"Animal Cruelty",1,right,all,false
+99,"Prenatal/Perinatal Drug/Alcohol Exposure",1,right,all,false
+100,"Danger to Self",1,right,all,false
+101,"Family Mental Illness",1,right,all,false
+102,"Family Substance Abuse",1,right,all,false
+103,"Violent Environment",1,right,all,false
+104,"None - History of Issues",1,right,all,false
+105,"Sexual Misconduct",1,right,all,false
+106,"Danger to Self",1,right,all,false
+107,"Injures Others",1,right,all,false
+108,"Injury by Abuse/Assault",1,right,all,false
+109,"Reckless Self-Endangerment",1,right,all,false
+110,"Suicide Ideation",1,right,all,false
+111,"Suicide Plan",1,right,all,false
+112,"Suicide Attempt",1,right,all,false
+113,"None (Current Issues)",1,right,all,false
+114,"Danger to Self",1,right,all,false
+115,"Danger to Others",1,right,all,false
+116,"Gravely Disabled",1,right,all,false
+117,"Does not apply (27-65 Criteria)",1,right,all,false
+118,"County Of Residence",3,right,all,true
+119,"Zip Code",5,right,all,true
+120,"Staff ID",7,right,all,true
+121,"School Age",1,right,all,false
+122,"Expelled from School",1,right,all,false
+123,"Suspended from School",1,right,all,false
+124,"Unexcused Absences from School",1,right,all,false
+125,"Currently Passing all Classes",1,right,all,false
+126,"Child less than 6 years old",1,right,all,false
+127,"Talking/Communication",1,right,all,false
+128,"Physical/Motor Movements",1,right,all,false
+129,"Hearing/Seeing",1,right,all,false
+130,"Learning/Cognition",1,right,all,false
+131,"Playing & Interacting",1,right,all,false
+132,"Self-Help Skills",1,right,all,false
+133,"Child readiness developmentally appropriate",1,right,all,false
+134,"Sexual Abuse",1,right,all,false
+135,"Neglect",1,right,all,false
+136,"Physical Abuse",1,right,all,false
+137,"Verbal Abuse",1,right,all,false
+138,"None-Victimization",1,right,all,false
+139,"Inpatient",1,right,all,false
+140,"Other 24-hour",1,right,all,false
+141,"Partial care",1,right,all,false
+142,"Outpatient",1,right,all,false
+143,"None (History of Mental Health Services)",1,right,all,false
+144,"Juvenile Justice",1,right,all,false
+145,"Special Education",1,right,all,false
+146,"Child Welfare",1,right,all,false
+147,"Adult Corrections",1,right,all,false
+148,"Substance Abuse",1,right,all,false
+149,"Developmental Disabilities",1,right,all,false
+150,"None (Previous/Concurrent Services)",1,right,all,false
+151,"Tobacco",1,right,all,false
+152,"Alcohol",1,right,all,false
+153,"Marijuana",1,right,all,false
+154,"Cocaine/Crack",1,right,all,false
+155,"Heroin",1,right,all,false
+156,"Other Opiates/Narcotics",1,right,all,false
+157,"Barbiturates/Sedatives/Tranquilizers",1,right,all,false
+158,"Amphetamines/Stimulants",1,right,all,false
+159,"Hallucinogens",1,right,all,false
+160,"Inhalants",1,right,all,false
+161,"None (Non-prescription Substance Use)",1,right,all,false
+162,"Physical Health",1,right,all,false
+163,"Self-Care / Basic Needs",1,right,all,false
+164,"Legal",1,right,all,false
+165,"Security / Supervision",1,right,all,false
+166,"Suicide / Danger to Self",1,right,all,false
+167,"Aggression / Danger to Others",1,right,all,false
+168,"Psychosis",1,right,all,false
+169,"Cognition",1,right,all,false
+170,"Attention",1,right,all,false
+171,"Manic Issues",1,right,all,false
+172,"Anxiety Issues",1,right,all,false
+173,"Depressive Issues",1,right,all,false
+174,"Alcohol Use",1,right,all,false
+175,"Drug Use",1,right,all,false
+176,"Family",1,right,all,false
+177,"Interpersonal",1,right,all,false
+178,"Socialization",1,right,all,false
+179,"Role Performance",1,right,all,false
+180,"Overall Symptom Severity",1,right,all,false
+181,"Social Support",1,right,all,false
+182,"Hope",1,right,all,false
+183,"Empowerment",1,right,all,false
+184,"Activity Involvement",1,right,all,false
+185,"Overall Recovery",1,right,all,false
+186,"Overall Level of Functioning",1,right,all,false
+187,"Record Code",1,right,all,false
+188,"First Contact Date",8,right,0106,false
+189,"Date of First Appointment Offered",8,right,0106,false
+190,"Pregnant",1,right,all,false
+191,"Sexual Orientation",1,right,all,false
+192,"Reason for Discharge",2,right,0506,true
+193,"Veteran/Active Military Status",1,right,all,false
+194,"Tobacco/Vaping Nicotine Status",1,right,all,false
+195,"Criminal Justice Involvement",2,right,all,false
+196,"School Attendance",1,right,all,false
+197,"Trauma History",1,right,all,false
+198,"Primary Diagnosis 1",7,right,all,true
+199,"Diagnosis 2",7,right,all,false
+200,"Diagnosis 3",7,right,all,false
+201,"Diagnosis 4",7,right,all,false
