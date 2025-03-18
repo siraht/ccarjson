@@ -467,8 +467,9 @@ def merge_json_by_priority(json1, json2, config_df):
 # Input Client JSON Data
 st.header("Paste Clinical Notes AI output here")
 
-# Primary JSON input
-json_input_primary = st.text_area("Paste evaluation note-generated JSON here.")
+# Primary input
+json_input_primary = st.text_area("Paste evaluation note-generated JSON or fixed-width text here.",
+                              help="The system will automatically detect if this is JSON or fixed-width format")
 
 # Option to enable merging
 enable_merge = st.checkbox("Need to create a discharge CCAR?", 
@@ -486,17 +487,54 @@ else:
 
 process_button = st.button("Process Client Data")
 
-# Process JSON Data
+# Process input data
 if process_button:
     try:
-        # Clean the input by removing everything before the opening curly brace
-        cleaned_input_primary = json_input_primary[json_input_primary.find('{'):] if '{' in json_input_primary else json_input_primary
+        # Detect if the primary input is JSON or fixed-width text
+        fields = {}
+        primary_parse_success = False
         
-        # Parse primary JSON
-        fields = json.loads(cleaned_input_primary)
-        if not isinstance(fields, dict):
-            st.error("Primary JSON must be a dictionary")
-        else:
+        # First try to parse as JSON
+        if '{' in json_input_primary:
+            try:
+                # Clean the input by removing everything before the opening curly brace
+                cleaned_input_primary = json_input_primary[json_input_primary.find('{'):]
+                
+                # Parse primary JSON
+                fields = json.loads(cleaned_input_primary)
+                if isinstance(fields, dict):
+                    primary_parse_success = True
+                    st.success("Successfully parsed primary input as JSON")
+                else:
+                    st.error("Primary input JSON must be a dictionary")
+            except json.JSONDecodeError:
+                st.warning("Could not parse primary input as JSON, trying fixed-width format...")
+        
+        # If JSON parsing failed or no curly braces, try to parse as fixed-width text
+        if not primary_parse_success:
+            try:
+                # Parse the fixed-width text
+                fields = parse_fixed_width_text(json_input_primary, st.session_state['config_df'])
+                
+                if fields:
+                    primary_parse_success = True
+                    st.success("Successfully parsed primary input as fixed-width text")
+                else:
+                    # If no data was parsed, try JSON again without the curly brace check as a last resort
+                    try:
+                        fields = json.loads(json_input_primary)
+                        if isinstance(fields, dict):
+                            primary_parse_success = True
+                            st.success("Successfully parsed primary input as JSON")
+                        else:
+                            st.error("Primary input could not be parsed as either JSON or fixed-width text")
+                    except json.JSONDecodeError:
+                        st.error("Could not parse primary input - it doesn't appear to be valid JSON or fixed-width text")
+            except Exception as e:
+                st.error(f"Error parsing primary input: {e}")
+        
+        # Only proceed if we successfully parsed the primary input
+        if primary_parse_success and isinstance(fields, dict):
             # Check if we need to merge with secondary input
             if enable_merge and secondary_input.strip():
                 secondary_data = {}
