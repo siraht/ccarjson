@@ -468,18 +468,18 @@ def merge_json_by_priority(json1, json2, config_df):
 st.header("Paste Clinical Notes AI output here")
 
 # Primary JSON input
-json_input_primary = st.text_area("Paste primary JSON here (e.g., {'field_A': 'X'})")
+json_input_primary = st.text_area("Paste evaluation note-generated JSON here.")
 
 # Option to enable merging
-enable_merge = st.checkbox("Enable merging with secondary input", 
+enable_merge = st.checkbox("Need to create a discharge CCAR?", 
                          value=False, 
-                         help="When checked, you can provide a secondary input to merge with the primary JSON")
+                         help="When checked, you can paste in the new Discharge CCAR + initial admissions CCAR to guarantee that the demographics information stays the same.")
 
 # Show secondary input only when merge is enabled
 if enable_merge:
-    st.info("You can provide either a secondary JSON or fixed-width text. Values will be merged based on json_priority in config.csv.")
-    secondary_input = st.text_area("Paste secondary input here (JSON or fixed-width text)", "",
-                                help="The system will automatically detect if this is JSON or fixed-width format")
+    st.info("You can provide either a secondary JSON output from CNAI or the fixed-width text that you generated here when you made the admissions CCAR.")
+    secondary_input = st.text_area("Paste discharge CCAR JSON from CNAI here.", "",
+                                help="Only paste discharge data here.")
 else:
     # Create an empty variable when merge is not enabled
     secondary_input = ""
