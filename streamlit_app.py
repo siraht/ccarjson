@@ -467,21 +467,22 @@ def merge_json_by_priority(json1, json2, config_df):
 # Input Client JSON Data
 st.header("Paste Clinical Notes AI output here")
 
-# Create two tabs for JSON inputs
-tab1, tab2 = st.tabs(["Primary JSON", "Secondary JSON (Optional)"])
+# Primary JSON input
+json_input_primary = st.text_area("Paste primary JSON here (e.g., {'field_A': 'X'})")
 
-with tab1:
-    json_input_primary = st.text_area("Paste primary JSON here (e.g., {'field_A': 'X'})")
+# Option to enable merging
+enable_merge = st.checkbox("Enable merging with secondary input", 
+                         value=False, 
+                         help="When checked, you can provide a secondary input to merge with the primary JSON")
 
-with tab2:
+# Show secondary input only when merge is enabled
+if enable_merge:
     st.info("You can provide either a secondary JSON or fixed-width text. Values will be merged based on json_priority in config.csv.")
     secondary_input = st.text_area("Paste secondary input here (JSON or fixed-width text)", "",
                                 help="The system will automatically detect if this is JSON or fixed-width format")
-
-# Option to enable merging
-enable_merge = st.checkbox("Merge both JSON inputs", 
-                         value=False, 
-                         help="When checked, both JSON inputs will be merged according to priority rules")
+else:
+    # Create an empty variable when merge is not enabled
+    secondary_input = ""
 
 process_button = st.button("Process Client Data")
 
