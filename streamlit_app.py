@@ -395,23 +395,160 @@ with st.expander("## Additional information Form"):
             st.text_area("Client Data JSON", json.dumps(client_data), height=200)
             st.success("Client data ready to be copied")
 
+# Function to parse fixed-width text into a dictionary
+def parse_fixed_width_text(text, config_df):
+    """Parse fixed-width text based on config_df specifications."""
+    fields = {}
+    text = text.strip()
+    
+    if not text:
+        return fields
+    
+    # Sort config by order to ensure correct parsing
+    sorted_config = config_df.sort_values('order')
+    
+    # Keep track of the current position in the text
+    pos = 0
+    
+    for _, row in sorted_config.iterrows():
+        field_name = row['name']
+        length = int(row['length'])
+        
+        # Extract the value for this field
+        if pos < len(text):
+            # Get the slice of text for this field
+            value = text[pos:pos+length].strip()
+            
+            # Store non-empty values
+            if value:
+                fields[field_name] = value
+            
+            # Move to the next position
+            pos += length
+        else:
+            # We've reached the end of the text
+            break
+    
+    return fields
+
+# Function to merge two JSON objects based on json_priority
+def merge_json_by_priority(json1, json2, config_df):
+    # Create a copy of the first JSON as the base
+    merged_json = json1.copy()
+    
+    # Create a mapping of field names to their priority
+    field_priorities = {}
+    for _, row in config_df.iterrows():
+        field_name = row['name']
+        # Default to 'admissions' if json_priority not specified
+        priority = row.get('json_priority', 'admissions')
+        field_priorities[field_name] = priority
+    
+    # Merge fields from json2 based on priority
+    for field_name, value in json2.items():
+        # Skip empty values
+        if not value:
+            continue
+            
+        # If field exists in json1 and has value, check priority
+        if field_name in json1 and json1[field_name]:
+            # Get priority for this field (default to 'admissions' if not found)
+            priority = field_priorities.get(field_name, 'admissions')
+            
+            # If priority is 'discharge', use json2's value
+            if priority == 'discharge':
+                merged_json[field_name] = value
+        else:
+            # If field doesn't exist in json1 or has no value, use json2's value
+            merged_json[field_name] = value
+    
+    return merged_json
+
 # Input Client JSON Data
 st.header("Paste Clinical Notes AI output here")
-json_input = st.text_area("Paste JSON here (e.g., {'field_A': 'X'})")
+
+# Create two tabs for JSON inputs
+tab1, tab2 = st.tabs(["Primary JSON", "Secondary JSON (Optional)"])
+
+with tab1:
+    json_input_primary = st.text_area("Paste primary JSON here (e.g., {'field_A': 'X'})")
+
+with tab2:
+    st.info("You can provide either a secondary JSON or fixed-width text. Values will be merged based on json_priority in config.csv.")
+    secondary_input = st.text_area("Paste secondary input here (JSON or fixed-width text)", "",
+                                help="The system will automatically detect if this is JSON or fixed-width format")
+
+# Option to enable merging
+enable_merge = st.checkbox("Merge both JSON inputs", 
+                         value=False, 
+                         help="When checked, both JSON inputs will be merged according to priority rules")
+
 process_button = st.button("Process Client Data")
 
 # Process JSON Data
 if process_button:
     try:
         # Clean the input by removing everything before the opening curly brace
-        cleaned_input = json_input[json_input.find('{'):] if '{' in json_input else json_input
+        cleaned_input_primary = json_input_primary[json_input_primary.find('{'):] if '{' in json_input_primary else json_input_primary
         
-        fields = json.loads(cleaned_input)
+        # Parse primary JSON
+        fields = json.loads(cleaned_input_primary)
         if not isinstance(fields, dict):
-            st.error("JSON must be a dictionary")
+            st.error("Primary JSON must be a dictionary")
         else:
+            # Check if we need to merge with secondary input
+            if enable_merge and secondary_input.strip():
+                secondary_data = {}
+                merge_occurred = False
+                
+                # Detect if the input is JSON or fixed-width text
+                try:
+                    # First try to parse as JSON
+                    if '{' in secondary_input:
+                        # Clean and parse as JSON
+                        cleaned_input_secondary = secondary_input[secondary_input.find('{'):]
+                        secondary_data_json = json.loads(cleaned_input_secondary)
+                        
+                        if not isinstance(secondary_data_json, dict):
+                            st.error("Secondary JSON must be a dictionary")
+                        else:
+                            # Add to secondary data
+                            secondary_data.update(secondary_data_json)
+                            merge_occurred = True
+                            st.success("Successfully parsed secondary input as JSON")
+                    else:
+                        # Try to parse as fixed-width text
+                        fixed_width_data = parse_fixed_width_text(secondary_input, st.session_state['config_df'])
+                        
+                        if fixed_width_data:
+                            # Add to secondary data
+                            secondary_data.update(fixed_width_data)
+                            merge_occurred = True
+                            st.success("Successfully parsed secondary input as fixed-width text")
+                        else:
+                            # If no data was parsed, try JSON again without the curly brace check
+                            try:
+                                secondary_data_json = json.loads(secondary_input)
+                                if isinstance(secondary_data_json, dict):
+                                    secondary_data.update(secondary_data_json)
+                                    merge_occurred = True
+                                    st.success("Successfully parsed secondary input as JSON")
+                                else:
+                                    st.error("Secondary input could not be parsed as either JSON or fixed-width text")
+                            except json.JSONDecodeError:
+                                st.error("Could not parse secondary input - it doesn't appear to be valid JSON or fixed-width text")
+                    
+                    # Merge the data if we have secondary data
+                    if secondary_data and merge_occurred:
+                        fields = merge_json_by_priority(fields, secondary_data, st.session_state['config_df'])
+                        st.success("Successfully merged inputs based on priority rules")
+                        
+                except Exception as e:
+                    st.error(f"Error processing secondary input: {e}")
+            
             # Apply rules to update field values
             fields = apply_rules(fields, st.session_state['rules'])
+            
             # Format into fixed-length string
             config_df = st.session_state['config_df']
             line = ""
@@ -433,7 +570,7 @@ if process_button:
                 st.session_state['lines'].append(line)
                 st.success("Client data processed and added to text file")
     except json.JSONDecodeError:
-        st.error("Invalid JSON input")
+        st.error("Invalid primary JSON input")
     except Exception as e:
         st.error(f"Error processing data: {e}")
 
