@@ -17,7 +17,11 @@ def process_csv_to_fixed_length(csv_text, csv_to_fl_config):
     # Read the CSV input text into a DataFrame without headers
     try:
         # Use header=None to indicate there are no headers, and assign column indexes
-        csv_input = pd.read_csv(io.StringIO(csv_text), header=None)
+        # Use csv.reader to properly handle quoted fields that may contain commas
+        csv_reader = csv.reader(io.StringIO(csv_text))
+        rows = list(csv_reader)
+        # Convert to DataFrame
+        csv_input = pd.DataFrame(rows)
     except Exception as e:
         return f"Error parsing CSV: {str(e)}"
     
@@ -36,6 +40,14 @@ def process_csv_to_fixed_length(csv_text, csv_to_fl_config):
                 value = str(row[idx])
             else:
                 value = ""
+            
+            # Remove any leading/trailing whitespace and any internal spaces as needed
+            # This helps with fixed-length formatting of fields that might have spaces
+            value = value.strip()
+            
+            # Special handling for Primary Diagnosis 1 field - remove periods
+            if config_row.name == "Primary Diagnosis 1" or config_row.name == "DC03 AXIS I Primary Diagnosis":
+                value = value.replace(".", "")
                 
             # Apply length and alignment
             output_length = int(config_row.output_length)
@@ -70,7 +82,11 @@ def validate_csv_input(csv_text, csv_to_fl_config):
     """
     try:
         # Just try to parse the CSV to see if it's valid
-        csv_input = pd.read_csv(io.StringIO(csv_text), header=None)
+        # Use csv.reader to properly handle quoted fields that may contain commas
+        csv_reader = csv.reader(io.StringIO(csv_text))
+        rows = list(csv_reader)
+        # Convert to DataFrame
+        csv_input = pd.DataFrame(rows)
         
         # Get the number of expected columns from the config
         expected_column_count = len(csv_to_fl_config)

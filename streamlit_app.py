@@ -423,8 +423,15 @@ if process_button:
                 field_name = row['name']
                 length = int(row['length'])
                 alignment = row['alignment'].lower()
-                # Remove all spaces from the value and convert to string
-                value = ''.join(str(fields.get(field_name, '')).split())
+                # Get the value, convert to string, and remove spaces
+                value = str(fields.get(field_name, '')).strip()
+                
+                # Special handling for diagnosis fields - remove periods
+                if field_name in ["Primary Diagnosis 1", "DC03 AXIS I Primary Diagnosis"]:
+                    value = value.replace(".", "")
+                
+                # For fixed-length output, we sometimes need to preserve spaces
+                # rather than removing them all
                 if alignment == 'left':
                     formatted_value = value[:length].ljust(length)
                 elif alignment == 'right':
