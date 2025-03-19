@@ -57,7 +57,6 @@ def initialize_form_data():
             'primary_diagnosis_icd10': "",
             'update_type': "",
             'discharge_date': "",
-            'date_of_last_contact': "",
             'type_of_discharge': "1– Treatment completed",
             'discharge_termination_referral': "",
             'reason_for_discharge': "01=Attendance"
@@ -241,15 +240,6 @@ def render_additional_info_form():
             st.session_state.form_data["discharge_date"] = st.session_state.form_data["effective_date"]
             
             col1, col2 = st.columns(2)
-            with col1:
-                date_of_last_contact = st.text_input(
-                    "Date of last contact", 
-                    value=st.session_state.form_data["date_of_last_contact"],
-                    key="date_of_last_contact",
-                    on_change=update_form_field,
-                    args=("date_of_last_contact",)
-                )
-                
             type_of_discharge = st.selectbox(
                 "Type of Discharge", 
                 ["1– Treatment completed", "2– Evaluation only", "3– Referred elsewhere", "4– Terminated"],
@@ -275,7 +265,6 @@ def render_additional_info_form():
             )
         else:
             st.session_state.form_data["discharge_date"] = ""
-            st.session_state.form_data["date_of_last_contact"] = ""
             st.session_state.form_data["type_of_discharge"] = ""
             st.session_state.form_data["discharge_termination_referral"] = ""
             st.session_state.form_data["reason_for_discharge"] = ""
@@ -314,7 +303,7 @@ def generate_client_data():
         "Type of insurance": st.session_state.form_data["type_of_insurance"],
         "Action Type": action_type_code,
         "Update type": st.session_state.form_data["update_type"],
-        "Date of Last Contact": st.session_state.form_data["date_of_last_contact"],
+        "Date of Last Contact": st.session_state.form_data["effective_date"],
         "Type of Discharge": st.session_state.form_data["type_of_discharge"][0] if st.session_state.form_data["type_of_discharge"] else "",
         "Discharge/Termination Referral": st.session_state.form_data["discharge_termination_referral"],
         "Reason for Discharge": st.session_state.form_data["reason_for_discharge"]
