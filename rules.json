@@ -1,5 +1,96 @@
 [
     {
+        "comment": "Rule for First Contact Date when Action Type is Discharge (03) or Evaluation Only (05)",
+        "target": "First Contact Date",
+        "conditions_values": [
+            {
+                "comment": "If Action Type is 03 (Discharge), set First Contact Date to blank",
+                "conditions": {
+                    "Action Type": "03"
+                },
+                "value": "        "
+            },
+            {
+                "comment": "If Action Type is 05 (Evaluation Only), set First Contact Date to blank",
+                "conditions": {
+                    "Action Type": "05"
+                },
+                "value": "        "
+            }
+        ],
+        "default": null
+    },
+    {
+        "comment": "Rule for Date of First Appointment Offered when Action Type is Discharge (03) or Evaluation Only (05)",
+        "target": "Date of First Appointment Offered",
+        "conditions_values": [
+            {
+                "comment": "If Action Type is 03 (Discharge), set Date of First Appointment Offered to blank",
+                "conditions": {
+                    "Action Type": "03"
+                },
+                "value": "        "
+            },
+            {
+                "comment": "If Action Type is 05 (Evaluation Only), set Date of First Appointment Offered to blank",
+                "conditions": {
+                    "Action Type": "05"
+                },
+                "value": "        "
+            }
+        ],
+        "default": null
+    },
+    {
+        "comment": "Rule for Reason for Discharge when Type of Discharge is not 3",
+        "target": "Reason for Discharge",
+        "conditions_values": [
+            {
+                "comment": "If Type of Discharge is not 3, set Reason for Discharge to blank",
+                "conditions": {
+                    "Type of Discharge": "1"
+                },
+                "value": "        "
+            },
+            {
+                "comment": "If Type of Discharge is not 3, set Reason for Discharge to blank",
+                "conditions": {
+                    "Type of Discharge": "2"
+                },
+                "value": "        "
+            },
+            {
+                "comment": "If Type of Discharge is not 3, set Reason for Discharge to blank",
+                "conditions": {
+                    "Type of Discharge": "4"
+                },
+                "value": "        "
+            },
+            {
+                "comment": "If Type of Discharge is not 3, set Reason for Discharge to blank",
+                "conditions": {
+                    "Type of Discharge": "5"
+                },
+                "value": "        "
+            },
+            {
+                "comment": "If Type of Discharge is not 3, set Reason for Discharge to blank",
+                "conditions": {
+                    "Type of Discharge": "6"
+                },
+                "value": "        "
+            },
+            {
+                "comment": "If Type of Discharge is not 3, set Reason for Discharge to blank",
+                "conditions": {
+                    "Type of Discharge": "7"
+                },
+                "value": "        "
+            }
+        ],
+        "default": null
+    },
+    {
         "comment": "Rule for 'Race - Declined' based on race fields",
         "target": "Race - Declined",
         "conditions_values": [

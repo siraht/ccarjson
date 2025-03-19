@@ -19,9 +19,9 @@ order,name,length,alignment,action_type,not_in_eval,json_priority
 18,"Local",1,right,all,true,admissions
 19,"CHP+",1,right,all,true,admissions
 20,"Referral Source",3,right,all,false,admissions
-21,"Effective Date",8,right,03,true,admissions
-22,"Action Type",2,right,all,true,admissions
-23,"Type of Update",2,right,03,true,admissions
+21,"Effective Date",8,right,03,true,discharge
+22,"Action Type",2,right,all,true,discharge
+23,"Type of Update",2,right,03,true,discharge
 24,"CDPHE ID",6,right,all,false,admissions
 25,"Housing Only",1,right,all,false,admissions
 26,"Meds Only",1,right,all,false,admissions
@@ -41,10 +41,10 @@ order,name,length,alignment,action_type,not_in_eval,json_priority
 40,"Native Hawaiian/Pacific Islander",1,right,all,false,admissions
 41,"White/Caucasian",1,right,all,false,admissions
 42,"Race - Declined",1,right,all,false,admissions
-43,"Discharge Date",8,right,0506,true,admissions
-44,"Date of Last Contact",8,right,0506,true,admissions
-45,"Type of Discharge",1,right,0506,true,admissions
-46,"Discharge/Termination Referral",3,right,0506,true,admissions
+43,"Discharge Date",8,right,0506,true,discharge
+44,"Date of Last Contact",8,right,0506,true,discharge
+45,"Type of Discharge",1,right,0506,true,discharge
+46,"Discharge/Termination Referral",3,right,0506,true,discharge
 47,"AXIS I Primary Psychiatric Diagnosis",5,right,all,false,admissions
 48,"AXIS I Secondary Psychiatric Diagnosis",5,right,all,false,admissions
 49,"AXIS II Psychiatric Diagnosis",5,right,all,false,admissions
@@ -103,15 +103,15 @@ order,name,length,alignment,action_type,not_in_eval,json_priority
 102,"Family Substance Abuse",1,right,all,false,admissions
 103,"Violent Environment",1,right,all,false,admissions
 104,"None - History of Issues",1,right,all,false,admissions
-105,"Sexual Misconduct",1,right,all,false,admissions
-106,"Danger to Self",1,right,all,false,admissions
-107,"Injures Others",1,right,all,false,admissions
-108,"Injury by Abuse/Assault",1,right,all,false,admissions
-109,"Reckless Self-Endangerment",1,right,all,false,admissions
-110,"Suicide Ideation",1,right,all,false,admissions
-111,"Suicide Plan",1,right,all,false,admissions
-112,"Suicide Attempt",1,right,all,false,admissions
-113,"None (Current Issues)",1,right,all,false,admissions
+105,"Sexual Misconduct",1,right,all,false,discharge
+106,"Danger to Self",1,right,all,false,discharge
+107,"Injures Others",1,right,all,false,discharge
+108,"Injury by Abuse/Assault",1,right,all,false,discharge
+109,"Reckless Self-Endangerment",1,right,all,false,discharge
+110,"Suicide Ideation",1,right,all,false,discharge
+111,"Suicide Plan",1,right,all,false,discharge
+112,"Suicide Attempt",1,right,all,false,discharge
+113,"None (Current Issues)",1,right,all,false,discharge
 114,"Danger to Self",1,right,all,false,admissions
 115,"Danger to Others",1,right,all,false,admissions
 116,"Gravely Disabled",1,right,all,false,admissions
@@ -149,48 +149,48 @@ order,name,length,alignment,action_type,not_in_eval,json_priority
 148,"Substance Abuse",1,right,all,false,admissions
 149,"Developmental Disabilities",1,right,all,false,admissions
 150,"None (Previous/Concurrent Services)",1,right,all,false,admissions
-151,"Tobacco",1,right,all,false,admissions
-152,"Alcohol",1,right,all,false,admissions
-153,"Marijuana",1,right,all,false,admissions
-154,"Cocaine/Crack",1,right,all,false,admissions
-155,"Heroin",1,right,all,false,admissions
-156,"Other Opiates/Narcotics",1,right,all,false,admissions
-157,"Barbiturates/Sedatives/Tranquilizers",1,right,all,false,admissions
-158,"Amphetamines/Stimulants",1,right,all,false,admissions
-159,"Hallucinogens",1,right,all,false,admissions
-160,"Inhalants",1,right,all,false,admissions
-161,"None (Non-prescription Substance Use)",1,right,all,false,admissions
-162,"Physical Health",1,right,all,false,admissions
-163,"Self-Care / Basic Needs",1,right,all,false,admissions
-164,"Legal",1,right,all,false,admissions
-165,"Security / Supervision",1,right,all,false,admissions
-166,"Suicide / Danger to Self",1,right,all,false,admissions
-167,"Aggression / Danger to Others",1,right,all,false,admissions
-168,"Psychosis",1,right,all,false,admissions
-169,"Cognition",1,right,all,false,admissions
-170,"Attention",1,right,all,false,admissions
-171,"Manic Issues",1,right,all,false,admissions
-172,"Anxiety Issues",1,right,all,false,admissions
-173,"Depressive Issues",1,right,all,false,admissions
-174,"Alcohol Use",1,right,all,false,admissions
-175,"Drug Use",1,right,all,false,admissions
-176,"Family",1,right,all,false,admissions
-177,"Interpersonal",1,right,all,false,admissions
-178,"Socialization",1,right,all,false,admissions
-179,"Role Performance",1,right,all,false,admissions
-180,"Overall Symptom Severity",1,right,all,false,admissions
-181,"Social Support",1,right,all,false,admissions
-182,"Hope",1,right,all,false,admissions
-183,"Empowerment",1,right,all,false,admissions
-184,"Activity Involvement",1,right,all,false,admissions
-185,"Overall Recovery",1,right,all,false,admissions
-186,"Overall Level of Functioning",1,right,all,false,admissions
+151,"Tobacco",1,right,all,false,discharge
+152,"Alcohol",1,right,all,false,discharge
+153,"Marijuana",1,right,all,false,discharge
+154,"Cocaine/Crack",1,right,all,false,discharge
+155,"Heroin",1,right,all,false,discharge
+156,"Other Opiates/Narcotics",1,right,all,false,discharge
+157,"Barbiturates/Sedatives/Tranquilizers",1,right,all,false,discharge
+158,"Amphetamines/Stimulants",1,right,all,false,discharge
+159,"Hallucinogens",1,right,all,false,discharge
+160,"Inhalants",1,right,all,false,discharge
+161,"None (Non-prescription Substance Use)",1,right,all,false,discharge
+162,"Physical Health",1,right,all,false,discharge
+163,"Self-Care / Basic Needs",1,right,all,false,discharge
+164,"Legal",1,right,all,false,discharge
+165,"Security / Supervision",1,right,all,false,discharge
+166,"Suicide / Danger to Self",1,right,all,false,discharge
+167,"Aggression / Danger to Others",1,right,all,false,discharge
+168,"Psychosis",1,right,all,false,discharge
+169,"Cognition",1,right,all,false,discharge
+170,"Attention",1,right,all,false,discharge
+171,"Manic Issues",1,right,all,false,discharge
+172,"Anxiety Issues",1,right,all,false,discharge
+173,"Depressive Issues",1,right,all,false,discharge
+174,"Alcohol Use",1,right,all,false,discharge
+175,"Drug Use",1,right,all,false,discharge
+176,"Family",1,right,all,false,discharge
+177,"Interpersonal",1,right,all,false,discharge
+178,"Socialization",1,right,all,false,discharge
+179,"Role Performance",1,right,all,false,discharge
+180,"Overall Symptom Severity",1,right,all,false,discharge
+181,"Social Support",1,right,all,false,discharge
+182,"Hope",1,right,all,false,discharge
+183,"Empowerment",1,right,all,false,discharge
+184,"Activity Involvement",1,right,all,false,discharge
+185,"Overall Recovery",1,right,all,false,discharge
+186,"Overall Level of Functioning",1,right,all,false,discharge
 187,"Record Code",1,right,all,false,admissions
 188,"First Contact Date",8,right,0106,false,admissions
 189,"Date of First Appointment Offered",8,right,0106,false,admissions
 190,"Pregnant",1,right,all,false,admissions
 191,"Sexual Orientation",1,right,all,false,admissions
-192,"Reason for Discharge",2,right,0506,true,admissions
+192,"Reason for Discharge",2,right,0506,true,discharge
 193,"Veteran/Active Military Status",1,right,all,false,admissions
 194,"Tobacco/Vaping Nicotine Status",1,right,all,false,admissions
 195,"Criminal Justice Involvement",2,right,all,false,admissions

@@ -3,6 +3,7 @@ import pandas as pd
 import json
 import os
 from csv_processor import process_csv_to_fixed_length, validate_csv_input
+from additional_info_form import render_additional_info_form, generate_client_data, clear_form, initialize_form_data
 
 # Function to apply rules to fields
 def apply_rules(fields, rules):
@@ -85,275 +86,20 @@ This app makes creating batch uploads for CCARs easy.
 - **Step 7**: Upload the .car file to the CCAR portal.
 """)
 
-# Initialize session state for form fields if not present
-if 'form_data' not in st.session_state:
-    st.session_state.form_data = {
-        'action_type': "Admission",
-        'first_contact_date': "",
-        'date_of_admission': "",
-        'type_of_insurance': "Medicaid",
-        'medicaid_rae': "",
-        'medicaid_id': "",
-        'healthie_id': "",
-        'date_of_birth': "",
-        'first_name': "",
-        'last_name': "",
-        'gender': "",
-        'county_of_residence': "",
-        'zip_code': "",
-        'staff_id': "EA",
-        'primary_diagnosis_icd10': "",
-        'update_type': "",
-        'discharge_date': "",
-        'date_of_last_contact': "",
-        'type_of_discharge': "1– Treatment completed",
-        'discharge_termination_referral': "",
-        'reason_for_discharge': "01=Attendance"
-    }
+# Initialize form data in session state
+initialize_form_data()
 
-# Callback functions to update session state when inputs change
-def update_form_field(field):
-    st.session_state.form_data[field] = st.session_state[field]
+# Render the additional information form
+generate_button, action_type = render_additional_info_form()
 
-# Function to clear all form fields
-def clear_form():
-    # Reset form data to default values
-    st.session_state.form_data = {
-        'first_contact_date': "",
-        'action_type': "Admission",
-        'date_of_admission': "",
-        'type_of_insurance': "Medicaid",
-        'medicaid_rae': "",
-        'medicaid_id': "",
-        'healthie_id': "",
-        'date_of_birth': "",
-        'first_name': "",
-        'last_name': "",
-        'gender': "",
-        'county_of_residence': "",
-        'zip_code': "",
-        'staff_id': "EA",
-        'primary_diagnosis_icd10': "",
-        'update_type': "",
-        'discharge_date': "",
-        'date_of_last_contact': "",
-        'type_of_discharge': "1– Treatment completed",
-        'discharge_termination_referral': "",
-        'reason_for_discharge': "01=Attendance"
-    }
+# Generate client data if button is clicked
+if generate_button:
+    client_data = generate_client_data()
     
-    # Reset widget state values to match form data
-    for key in st.session_state.form_data:
-        if key in st.session_state:
-            st.session_state[key] = st.session_state.form_data[key]
-
-# New section for inputting text and selecting options
-with st.expander("## Additional information Form"):
-    # Action type selection (affects visibility of other fields)
-    action_type = st.selectbox(
-        "Action type", 
-        ["Admission", "Update", "Discharge", "Evaluation Only"],
-        key="action_type",
-        on_change=update_form_field,
-        args=("action_type",)
-    )
-    
-    # Common fields for all action types
-    col1, col2 = st.columns(2)
-    with col1:
-        first_contact_date = st.text_input(
-            "First contact date", 
-            value=st.session_state.form_data["first_contact_date"],
-            key="first_contact_date",
-            on_change=update_form_field,
-            args=("first_contact_date",)
-        )
-    
-    with col2:
-        # Only show date of admission for certain action types
-        if action_type in ["Admission", "Evaluation Only"]:
-            date_of_admission = st.text_input(
-                "Date of admission", 
-                value=st.session_state.form_data["date_of_admission"],
-                key="date_of_admission",
-                on_change=update_form_field,
-                args=("date_of_admission",)
-            )
-        else:
-            st.session_state.form_data["date_of_admission"] = ""
-    
-    # Insurance information
-    type_of_insurance = st.selectbox(
-        "Type of insurance", 
-        ["Medicaid", "CHP+", "Commercial", "Self-pay"],
-        key="type_of_insurance",
-        on_change=update_form_field,
-        args=("type_of_insurance",)
-    )
-    
-    # Only show Medicaid fields for certain insurance types
-    if type_of_insurance in ["Medicaid", "CHP+"]:
-        col1, col2 = st.columns(2)
-        with col1:
-            medicaid_rae = st.text_input(
-                "Medicaid RAE", 
-                value=st.session_state.form_data["medicaid_rae"],
-                key="medicaid_rae",
-                on_change=update_form_field,
-                args=("medicaid_rae",)
-            )
-        with col2:
-            medicaid_id = st.text_input(
-                "Medicaid ID", 
-                value=st.session_state.form_data["medicaid_id"],
-                key="medicaid_id",
-                on_change=update_form_field,
-                args=("medicaid_id",)
-            )
-    else:
-        st.session_state.form_data["medicaid_rae"] = ""
-        st.session_state.form_data["medicaid_id"] = ""
-    
-    # Client identification fields
-    col1, col2 = st.columns(2)
-    with col1:
-        healthie_id = st.text_input(
-            "Healthie ID", 
-            value=st.session_state.form_data["healthie_id"],
-            key="healthie_id",
-            on_change=update_form_field,
-            args=("healthie_id",)
-        )
-    with col2:
-        date_of_birth = st.text_input(
-            "Date of birth", 
-            value=st.session_state.form_data["date_of_birth"],
-            key="date_of_birth",
-            on_change=update_form_field,
-            args=("date_of_birth",)
-        )
-    
-    col1, col2 = st.columns(2)
-    with col1:
-        first_name = st.text_input(
-            "First Name", 
-            value=st.session_state.form_data["first_name"],
-            key="first_name",
-            on_change=update_form_field,
-            args=("first_name",)
-        )
-    with col2:
-        last_name = st.text_input(
-            "Last Name", 
-            value=st.session_state.form_data["last_name"],
-            key="last_name",
-            on_change=update_form_field,
-            args=("last_name",)
-        )
-    
-    col1, col2 = st.columns(2)
-    with col1:
-        gender = st.text_input(
-            "Gender", 
-            value=st.session_state.form_data["gender"],
-            key="gender",
-            on_change=update_form_field,
-            args=("gender",)
-        )
-    
-    # Location and staff information
-    col1, col2 = st.columns(2)
-    with col1:
-        county_of_residence = st.text_input(
-            "County of residence", 
-            value=st.session_state.form_data["county_of_residence"],
-            key="county_of_residence",
-            on_change=update_form_field,
-            args=("county_of_residence",)
-        )
-    with col2:
-        zip_code = st.text_input(
-            "Zip code", 
-            value=st.session_state.form_data["zip_code"],
-            key="zip_code",
-            on_change=update_form_field,
-            args=("zip_code",)
-        )
-    
-    col1, col2 = st.columns(2)
-    with col1:
-        staff_id = st.text_input(
-            "Staff ID", 
-            value=st.session_state.form_data["staff_id"],
-            key="staff_id",
-            on_change=update_form_field,
-            args=("staff_id",)
-        )
-    with col2:
-        primary_diagnosis_icd10 = st.text_input(
-            "Primary Diagnosis ICD10 code", 
-            value=st.session_state.form_data["primary_diagnosis_icd10"],
-            key="primary_diagnosis_icd10",
-            on_change=update_form_field,
-            args=("primary_diagnosis_icd10",)
-        )
-    
-    # Update type (only show for Update action type)
-    if action_type == "Update":
-        update_type = st.selectbox(
-            "Update type", 
-            ["", "Annual", "Interim/reassessment", "Psychiatric Hospital Admission", "Psychiatric Hospital Discharge"],
-            key="update_type",
-            on_change=update_form_field,
-            args=("update_type",)
-        )
-    else:
-        st.session_state.form_data["update_type"] = ""
-    
-    # Discharge fields (only show for Discharge or Evaluation Only action types)
-    if action_type in ["Discharge", "Evaluation Only"]:
-        col1, col2 = st.columns(2)
-        with col1:
-            discharge_date = st.text_input(
-                "Discharge Date", 
-                value=st.session_state.form_data["discharge_date"],
-                key="discharge_date",
-                on_change=update_form_field,
-                args=("discharge_date",)
-            )
-        with col2:
-            date_of_last_contact = st.text_input(
-                "Date of Last Contact", 
-                value=st.session_state.form_data["date_of_last_contact"],
-                key="date_of_last_contact",
-                on_change=update_form_field,
-                args=("date_of_last_contact",)
-            )
-        
-        type_of_discharge = st.selectbox(
-            "Type of Discharge", 
-            ["1– Treatment completed", "2– Transferred/Referred", "3– Treatment not completed"],
-            key="type_of_discharge",
-            on_change=update_form_field,
-            args=("type_of_discharge",)
-        )
-        
-        discharge_termination_referral = st.text_input(
-            "Discharge/Termination Referral", 
-            value=st.session_state.form_data["discharge_termination_referral"],
-            key="discharge_termination_referral",
-            on_change=update_form_field,
-            args=("discharge_termination_referral",)
-        )
-        
-        reason_for_discharge = st.selectbox(
-            "Reason for Discharge", 
-            ["01=Attendance", "02=Client Decision", "03=Client stopped coming and contact efforts failed", "04=Financial/Payments", "05=Lack of Progress", "06=Medical Reasons", "07=Military Deployment", "08=Moved", "09=Incarcerated", "10=Died", "11=Agency closed/No longer in business"],
-            key="reason_for_discharge",
-            on_change=update_form_field,
-            args=("reason_for_discharge",)
-        )
-    else:
+    if client_data:
+        # Display the JSON data in a text area for manual copying
+        st.text_area("Client Data JSON", json.dumps(client_data), height=200)
+        st.success("Client data ready to be copied")
         st.session_state.form_data["discharge_date"] = ""
         st.session_state.form_data["date_of_last_contact"] = ""
         st.session_state.form_data["type_of_discharge"] = ""
@@ -363,14 +109,14 @@ with st.expander("## Additional information Form"):
     # Add buttons in columns for better layout
     col1, col2 = st.columns(2)
     with col1:
-        clear_button = st.button('Clear Form', on_click=clear_form)
+        clear_button = st.button('Clear Form', on_click=clear_form, key='clear_form_button_main')
     with col2:
-        generate_button = st.button('Generate Client Data JSON')
+        generate_button = st.button('Generate Client Data JSON', key='generate_button_main')
     
     if generate_button:
         client_data = {
             "First contact date": st.session_state.form_data["first_contact_date"],
-            "Date of admission": st.session_state.form_data["date_of_admission"],
+            "Effective Date": st.session_state.form_data["effective_date"],
             "Medicaid RAE": st.session_state.form_data["medicaid_rae"],
             "Medicaid ID": st.session_state.form_data["medicaid_id"],
             "Healthie ID": st.session_state.form_data["healthie_id"],
@@ -385,7 +131,6 @@ with st.expander("## Additional information Form"):
             "Type of insurance": st.session_state.form_data["type_of_insurance"],
             "Action type": st.session_state.form_data["action_type"],
             "Update type": st.session_state.form_data["update_type"],
-            "Discharge Date": st.session_state.form_data["discharge_date"],
             "Date of Last Contact": st.session_state.form_data["date_of_last_contact"],
             "Type of Discharge": st.session_state.form_data["type_of_discharge"],
             "Discharge/Termination Referral": st.session_state.form_data["discharge_termination_referral"],
@@ -396,8 +141,13 @@ with st.expander("## Additional information Form"):
         required_fields = ["First contact date", "Healthie ID", "Date of birth", "First Name", "Last Name", "Gender", "County of residence", "Zip code", "Staff ID", "Primary Diagnosis ICD10 code", "Type of insurance", "Action type"]
         
         # Add conditional required fields
-        if action_type in ["Admission", "Evaluation Only"]:
-            required_fields.append("Date of admission")
+        required_fields.append("Effective Date")
+        
+        # Add Date of Admission or Discharge Date based on Action Type
+        if action_type == "Admission" or action_type == "Evaluation Only":
+            client_data["Date of admission"] = st.session_state.form_data["effective_date"]
+        elif action_type == "Discharge":
+            client_data["Discharge Date"] = st.session_state.form_data["effective_date"]
             
         missing_fields = [field for field in required_fields if not client_data[field]]
         
